@@ -9,6 +9,9 @@
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
+
+
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 --Global variables
@@ -23,6 +26,11 @@ local stdscr = curses.stdscr()
 --other variables
 local height, width = stdscr:getmaxyx()
 local title = "Herr's Shop List Manager"
+local content = nil
+local slm = require "shopListManager"
+
+
+
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -30,6 +38,7 @@ local title = "Herr's Shop List Manager"
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
+--print title in center of screen and underline with dashes
 local function drawTitle()
     --print title in center of screen
     startx = math.floor(width/2) - math.floor(string.len(title)/2)
@@ -42,10 +51,28 @@ local function drawTitle()
     end
 end
 
+
+--write prompt and move input cursor to correct position
 local function drawCommandArea()
     stdscr:mvaddstr(height-2,0,"Enter Command:")
     stdscr:move(height-1,0)
 end
+
+
+--draw the content in the middle of the screen
+local function drawContent()
+    if content then
+        stdscr:mvaddstr(4,0,content)
+    end
+end
+
+
+--check if the given command is a valid command to exit the program
+local function isValidExitCommand(c)
+    return c == "q" or c == "exit" or c == "back"
+end
+
+
 
 
 -------------------------------------------------------------------------------
@@ -54,23 +81,22 @@ end
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
-
-
 local go = true
 
 while go do
     stdscr:clear()
     drawTitle()
+    drawContent()
     drawCommandArea()
 
     local input = stdscr:getstr()
 
-    if input == "exit" then
+    if isValidExitCommand(input) then
         go = false
+    else
+        content = input
     end
 end
-
-
 
 --end curses
 curses.endwin()
