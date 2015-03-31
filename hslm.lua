@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--HerrSubset's Shopping List Manager
+--
+--Compare prices at different stores and keep them up to date. Conveniently
+--shows you where the lowest price for each product in your list can be found.
+--Also shows the total of all the lowest prices so you know how much money
+--you'll spend at minimum.
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
