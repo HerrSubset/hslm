@@ -25,7 +25,7 @@ local stdscr = curses.stdscr()
 
 --other variables
 local height, width = stdscr:getmaxyx()
-local title = "Herr's Shop List Manager"
+local title = "Herr's Shopping List Manager"
 local content = nil
 local slm = require "shopListManager"
 
@@ -61,8 +61,17 @@ end
 
 --draw the content in the middle of the screen
 local function drawContent()
-    if content then
-        stdscr:mvaddstr(4,0,content)
+    local content = slm.getContentTable()
+    local startx = 0
+    local starty = 3
+
+    for i = 1, #content do
+        for j = 1, #content[i] do
+            stdscr:mvaddstr(starty, startx, content[i][j])
+            starty = starty + 1
+        end
+        startx = startx + 7
+        starty = 3
     end
 end
 
@@ -73,6 +82,10 @@ local function isValidExitCommand(c)
 end
 
 
+--check if the given command is a correct regular command
+local function isValidCommand(c)
+    return true
+end
 
 
 -------------------------------------------------------------------------------
@@ -92,8 +105,10 @@ while go do
     local input = stdscr:getstr()
 
     if isValidExitCommand(input) then
+        --exit loop
         go = false
-    else
+    elseif (isValidCommand(input)) then
+        --process input
         content = input
     end
 end
