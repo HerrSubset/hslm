@@ -28,6 +28,7 @@ local height, width = stdscr:getmaxyx()
 local title = "Herr's Shopping List Manager"
 local content = nil
 local slm = require "shopListManager"
+local flashMessage = nil
 
 
 
@@ -48,6 +49,11 @@ local function drawTitle()
     for i = 1, string.len(title) do
         stdscr:move(1,startx+(i-1))
         stdscr:addch("-")
+    end
+
+    if flashMessage then
+        stdscr:mvaddstr(2,10,flashMessage)
+        flashMessage = nil
     end
 end
 
@@ -82,9 +88,19 @@ local function isValidExitCommand(c)
 end
 
 
---check if the given command is a correct regular command
-local function isValidCommand(c)
-    return true
+--split command up, put it in an array and return it
+local function getCommandArray(c)
+    local res = {}
+
+    --assert(string.match(command, "%a+%s%a+%s%a+%s%d+%.?%d*"))
+
+    for str in string.gmatch(c, "%a+") do
+        res[#res + 1] = str
+    end
+
+    res[4] = string.match(c, "%d+%.?%d*")
+
+    return res
 end
 
 
@@ -110,9 +126,10 @@ while go do
     if isValidExitCommand(input) then
         --exit loop
         go = false
-    elseif (isValidCommand(input)) then
+    else
         --process input
-        slm.setPrice("alternate", "gpu", 300)
+        commandArray = getCommandArray(input)
+        slm.setPrice(commandArray[2], commandArray[3], commandArray[4])
     end
 end
 

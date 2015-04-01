@@ -17,11 +17,11 @@ local shopListManager = {}
 -------------------------------------------------------------------------------
 
 --array used to store the different items in the shopping list
-local items = {"cpu","psu"}
+local items = {}
 --array containing all the different stores
-local stores = {"amazon","tones"}
+local stores = {}
 --table showing the price of an item in a specific store
-local prices = {{214.99,200},{40,50.33}}
+local prices = {}
 
 
 
@@ -32,7 +32,7 @@ local prices = {{214.99,200},{40,50.33}}
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
---add a column of 0's in the prices table at the given index
+--add a row of 0's in the prices table at the given index
 local function addEmptyPriceRow(index)
     -- create a new row for the new item
     prices[index] = {}
@@ -44,6 +44,7 @@ local function addEmptyPriceRow(index)
 end
 
 
+--add a column of 0's in the prices table at the given index
 local function addEmptyPriceColumn(index)
     for i = 1, #items do
         prices[i][index] = 0
