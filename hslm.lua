@@ -97,19 +97,22 @@ end
 local go = true
 
 while go do
+    --draw UI
     stdscr:clear()
     drawTitle()
     drawContent()
     drawCommandArea()
 
+    --get input
     local input = stdscr:getstr()
 
+    --process input
     if isValidExitCommand(input) then
         --exit loop
         go = false
     elseif (isValidCommand(input)) then
         --process input
-        content = input
+        slm.setPrice("alternate", "gpu", 300)
     end
 end
 
