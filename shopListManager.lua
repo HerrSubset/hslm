@@ -51,6 +51,7 @@ local function addEmptyPriceColumn(index)
     end
 end
 
+
 --create store if it doesn't exist and returns the index of the new store.
 --If the store already existed it just returns the store's index.
 local function createStore(storeName)
@@ -73,6 +74,7 @@ local function createStore(storeName)
     return res
 end
 
+
 --create item if it doesn't exist and returns the index of the new item.
 --If the item already existed it just returns the item's index.
 local function createItem(itemName)
@@ -94,6 +96,7 @@ local function createItem(itemName)
 
     return res
 end
+
 
 --get the minimal price of a certain row in the prices table
 local function getMinOfRow(index)
@@ -130,6 +133,7 @@ local function getItemColumn()
     return res
 end
 
+
 --return a column with the lowest prices for every item
 local function getMinimumPricesColumn()
     local res = {"Minimum"}
@@ -141,6 +145,9 @@ local function getMinimumPricesColumn()
     return res
 end
 
+
+--returns a table with all the prices per store, with the storename on top
+--of every column
 local function getPriceColumns()
     local res = {}
 
@@ -156,6 +163,32 @@ local function getPriceColumns()
     return res
 end
 
+
+--returns the sum of the numbers in the given column
+local function getSumOfCol(column)
+    local res = 0
+
+    for i = 2, #column do
+        res = res + column[i]
+    end
+
+    return res
+end
+
+
+--add a row containing the total of every column
+local function addTotalRow(table)
+    table[1][#table[1] + 1] = "total"
+
+    --calculate sum for every store and the minimum column
+    for i = 1, #stores +1 do
+        table[i+1][#table[i+1] +1] = getSumOfCol(table[i+1])
+    end
+
+    return table
+end
+
+
 --build the full content table
 local function buildContentTable()
     local res = {}
@@ -163,11 +196,13 @@ local function buildContentTable()
     res[1] = getItemColumn()
     res[2] = getMinimumPricesColumn()
 
-    tmp = getPriceColumns()
+    local tmp = getPriceColumns()
 
     for i =1, #tmp do
         res[#res + 1] = tmp[i]
     end
+
+    res = addTotalRow(res)
 
     return res
 end
