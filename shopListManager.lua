@@ -109,37 +109,64 @@ local function getMinOfRow(index)
     return res
 end
 
---build the full content table
-local function buildContentTable()
-    res = {}
 
-    --add item column
-    local itemCol = {""}  --leave first space blank to have correct spacing
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--Content building functions
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+--return an array containing all the items, with the first space being blank
+--to have correct spacing
+local function getItemColumn()
+    local res = {""}  --leave first space blank to have correct spacing
+
     for i = 1, #items do
-        itemCol[i+1] = items[i]
+        res[i+1] = items[i]
     end
 
-    res[1] = itemCol
+    return res
+end
 
-    --add minimum column if there are items in the prices table
-    if #prices > 0 then
-        local minimumCol = {"Minimum"}
-        for i = 1, #items do
-            minimumCol[i+1] = getMinOfRow(i)
-        end
+--return a column with the lowest prices for every item
+local function getMinimumPricesColumn()
+    local res = {"Minimum"}
 
-        res[2] = minimumCol
+    for i = 1, #items do
+        res[i+1] = getMinOfRow(i)
     end
 
+    return res
+end
 
-    --add store columns
+local function getPriceColumns()
+    local res = {}
+
     for i = 1, #stores do
         local storeCol = {stores[i]}
         --get item prices for that store out of prices table
         for j = 1, #items do
             storeCol[j+1] = prices[j][i]
         end
-        res[i+2] = storeCol
+        res[i] = storeCol
+    end
+
+    return res
+end
+
+--build the full content table
+local function buildContentTable()
+    local res = {}
+
+    res[1] = getItemColumn()
+    res[2] = getMinimumPricesColumn()
+
+    tmp = getPriceColumns()
+
+    for i =1, #tmp do
+        res[#res + 1] = tmp[i]
     end
 
     return res
@@ -165,6 +192,7 @@ end
 function shopListManager.getContentTable()
     local res = nil
 
+    --only return something else than nil when there's content
     if #prices > 0 then
         res = buildContentTable()
     end
