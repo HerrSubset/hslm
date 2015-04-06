@@ -128,7 +128,7 @@ function shopListManager.getContentTable()
         local storeCol = {stores[i]}
         --get item prices for that store out of prices table
         for j = 1, #items do
-            storeCol[j+1] = prices[j][i]
+            storeCol[j+1] = prices[j][i] + 20.13
         end
         res[i+1] = storeCol
     end

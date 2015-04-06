@@ -129,7 +129,7 @@ while go do
     else
         --process input
         commandArray = getCommandArray(input)
-        slm.setPrice(commandArray[2], commandArray[3], commandArray[4])
+        slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
     end
 end
 
