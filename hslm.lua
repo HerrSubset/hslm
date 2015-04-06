@@ -71,17 +71,26 @@ local function drawContent()
     local startx = 0
     local starty = 3
 
-    for i = 1, #content do
-        for j = 1, #content[i] do
-            if content[i][j] == 0 then
-                stdscr:mvaddstr(starty, startx, "-")
-            else
-                stdscr:mvaddstr(starty, startx, content[i][j])
+    if content == nil then
+        text = 'type "update <storename> <itemname> <price>" to build up the table'
+        stdscr:mvaddstr(height/2, width/2 - string.len(text)/2, text)
+    else
+        for i = 1, #content do
+            for j = 1, #content[i] do
+                if content[i][j] == 0 then
+                    stdscr:mvaddstr(starty, startx, "-")
+                else
+                    stdscr:mvaddstr(starty, startx, content[i][j])
+                end
+
+                --move cursor for the next iteration
+                starty = starty + 1
             end
-            starty = starty + 1
+
+            --bring cursor to top of next column
+            startx = startx + 7
+            starty = 3
         end
-        startx = startx + 7
-        starty = 3
     end
 end
 

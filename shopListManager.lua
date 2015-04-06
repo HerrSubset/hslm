@@ -109,6 +109,42 @@ local function getMinOfRow(index)
     return res
 end
 
+--build the full content table
+local function buildContentTable()
+    res = {}
+
+    --add item column
+    local itemCol = {""}  --leave first space blank to have correct spacing
+    for i = 1, #items do
+        itemCol[i+1] = items[i]
+    end
+
+    res[1] = itemCol
+
+    --add minimum column if there are items in the prices table
+    if #prices > 0 then
+        local minimumCol = {"Minimum"}
+        for i = 1, #items do
+            minimumCol[i+1] = getMinOfRow(i)
+        end
+
+        res[2] = minimumCol
+    end
+
+
+    --add store columns
+    for i = 1, #stores do
+        local storeCol = {stores[i]}
+        --get item prices for that store out of prices table
+        for j = 1, #items do
+            storeCol[j+1] = prices[j][i]
+        end
+        res[i+2] = storeCol
+    end
+
+    return res
+end
+
 
 
 -------------------------------------------------------------------------------
@@ -127,33 +163,10 @@ end
 
 
 function shopListManager.getContentTable()
-    local res = {}
+    local res = nil
 
-    --add item column
-    local itemCol = {""}  --leave first space blank to have correct spacing
-    for i = 1, #items do
-            itemCol[i+1] = items[i]
-    end
-
-    res[1] = itemCol
-
-    --add minimum column
-    local minimumCol = {"Minimum"}
-    for i = 1, #items do
-        minimumCol[i+1] = getMinOfRow(i)
-    end
-
-    res[2] = minimumCol
-
-
-    --add store columns
-    for i = 1, #stores do
-        local storeCol = {stores[i]}
-        --get item prices for that store out of prices table
-        for j = 1, #items do
-            storeCol[j+1] = prices[j][i]
-        end
-        res[i+2] = storeCol
+    if #prices > 0 then
+        res = buildContentTable()
     end
 
     return res
