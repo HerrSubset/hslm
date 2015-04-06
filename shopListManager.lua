@@ -95,6 +95,20 @@ local function createItem(itemName)
     return res
 end
 
+--get the minimal price of a certain row in the prices table
+local function getMinOfRow(index)
+    local res = 999
+    local row = prices[index]
+
+    for i = 1, #row do
+        if (row[i] < res) and (row[i] ~= 0) then
+            res = row[i]
+        end
+    end
+
+    return res
+end
+
 
 
 -------------------------------------------------------------------------------
@@ -123,14 +137,23 @@ function shopListManager.getContentTable()
 
     res[1] = itemCol
 
+    --add minimum column
+    local minimumCol = {"Minimum"}
+    for i = 1, #items do
+        minimumCol[i+1] = getMinOfRow(i)
+    end
+
+    res[2] = minimumCol
+
+
     --add store columns
     for i = 1, #stores do
         local storeCol = {stores[i]}
         --get item prices for that store out of prices table
         for j = 1, #items do
-            storeCol[j+1] = prices[j][i] + 20.13
+            storeCol[j+1] = prices[j][i]
         end
-        res[i+1] = storeCol
+        res[i+2] = storeCol
     end
 
     return res
