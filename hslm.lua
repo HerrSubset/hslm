@@ -73,7 +73,11 @@ local function drawContent()
 
     for i = 1, #content do
         for j = 1, #content[i] do
-            stdscr:mvaddstr(starty, startx, content[i][j])
+            if content[i][j] == 0 then
+                stdscr:mvaddstr(starty, startx, "-")
+            else
+                stdscr:mvaddstr(starty, startx, content[i][j])
+            end
             starty = starty + 1
         end
         startx = startx + 7
