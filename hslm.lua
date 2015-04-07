@@ -64,6 +64,31 @@ local function drawCommandArea()
     stdscr:move(height-1,0)
 end
 
+--converts all the items in the content table to strings
+local function convertContentToStrings(contentMatrix)
+    local res = contentMatrix
+
+    for i = 1, #res do
+        for j = 1, #res[i] do
+            res[i][j] = tostring(res[i][j])
+        end
+    end
+
+    return res
+end
+
+
+local function getLongestStringLength(row)
+    --set default minimum width of 6
+    local res = 6
+
+    for i = 1, #row do
+        res = math.max(res, string.len(row[i]))
+    end
+
+    return res
+end
+
 
 --draw the content in the middle of the screen
 local function drawContent()
@@ -75,9 +100,11 @@ local function drawContent()
         text = 'type "update <storename> <itemname> <price>" to build up the table'
         stdscr:mvaddstr(height/2, width/2 - string.len(text)/2, text)
     else
+        content = convertContentToStrings(content)
         for i = 1, #content do
+            local rowWidth = getLongestStringLength(content[i]) + 1
             for j = 1, #content[i] do
-                if content[i][j] == 0 then
+                if content[i][j] == '0' then
                     stdscr:mvaddstr(starty, startx, "-")
                 else
                     stdscr:mvaddstr(starty, startx, content[i][j])
@@ -88,7 +115,7 @@ local function drawContent()
             end
 
             --bring cursor to top of next column
-            startx = startx + 7
+            startx = startx + rowWidth
             starty = 3
         end
     end
