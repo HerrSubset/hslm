@@ -50,17 +50,17 @@ local function drawTitle()
         stdscr:move(1,startx+(i-1))
         stdscr:addch("-")
     end
-
-    if flashMessage then
-        stdscr:mvaddstr(2,10,flashMessage)
-        flashMessage = nil
-    end
 end
 
 
 --write prompt and move input cursor to correct position
 local function drawCommandArea()
-    stdscr:mvaddstr(height-2,0,"Enter Command:")
+    local prompt = "Enter Command: "
+    if flashMessage then
+        prompt = prompt .. "(" .. flashMessage .. ")"
+        flashMessage = nil
+    end
+    stdscr:mvaddstr(height-2,0, prompt)
     stdscr:move(height-1,0)
 end
 
