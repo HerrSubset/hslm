@@ -89,6 +89,18 @@ local function getLongestStringLength(row)
     return res
 end
 
+--draw a certain amount of hashes starting at a specific index
+local function printHashes(y, x, length)
+    local x = x
+    local y = y
+
+    stdscr:move(y,x)
+    for i = 1, length do
+        stdscr:addstr("#")
+        x = x + 1
+    end
+end
+
 
 --draw the content in the middle of the screen
 local function drawContent()
@@ -96,14 +108,19 @@ local function drawContent()
     local startx = 0
     local starty = 3
 
+    --set help message when there's no content
     if content == nil then
         text = 'type "update <storename> <itemname> <price>" to build up the table'
         stdscr:mvaddstr(height/2, width/2 - string.len(text)/2, text)
-    else
+
+    else --start drawing content
         content = convertContentToStrings(content)
-        for i = 1, #content do
+        for i = 1, #content do  --loop through all the columns
+
+            --determinge column width
             local rowWidth = getLongestStringLength(content[i]) + 1
-            for j = 1, #content[i] do
+
+            for j = 1, #content[i] -1 do
                 if content[i][j] == '0' then
                     stdscr:mvaddstr(starty, startx, "-")
                 else
@@ -112,6 +129,17 @@ local function drawContent()
 
                 --move cursor for the next iteration
                 starty = starty + 1
+            end
+
+            --print hashes row above the row with totals
+            printHashes(starty, startx, rowWidth)
+            starty = starty + 1
+
+            --print the last cell of the row (the total)
+            if content[i][#content[i]] == '0' then
+                stdscr:mvaddstr(starty, startx, "-")
+            else
+                stdscr:mvaddstr(starty, startx, content[i][#content[i]])
             end
 
             --bring cursor to top of next column
