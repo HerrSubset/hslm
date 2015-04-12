@@ -101,6 +101,15 @@ local function printHashes(y, x, length)
     end
 end
 
+--print a cell of the content table, print "-" when the cell contains '0'
+local function printCell(cellContent, x, y)
+    if cellContent == '0' then
+        stdscr:mvaddstr(y, x, "-")
+    else
+        stdscr:mvaddstr(y, x, cellContent)
+    end
+end
+
 
 --draw the content in the middle of the screen
 local function drawContent()
@@ -121,11 +130,7 @@ local function drawContent()
             local rowWidth = getLongestStringLength(content[i]) + 1
 
             for j = 1, #content[i] -1 do
-                if content[i][j] == '0' then
-                    stdscr:mvaddstr(starty, startx, "-")
-                else
-                    stdscr:mvaddstr(starty, startx, content[i][j])
-                end
+                printCell(content[i][j], startx, starty)
 
                 --move cursor for the next iteration
                 starty = starty + 1
@@ -136,11 +141,7 @@ local function drawContent()
             starty = starty + 1
 
             --print the last cell of the row (the total)
-            if content[i][#content[i]] == '0' then
-                stdscr:mvaddstr(starty, startx, "-")
-            else
-                stdscr:mvaddstr(starty, startx, content[i][#content[i]])
-            end
+            printCell(content[i][#content[i]], startx, starty)
 
             --bring cursor to top of next column
             startx = startx + rowWidth
