@@ -23,6 +23,10 @@ local stores = {}
 --table showing the price of an item in a specific store
 local prices = {}
 
+local currentBuild = nil
+
+local db = require "db"
+
 
 
 
@@ -221,6 +225,8 @@ function shopListManager.setPrice(storeName, itemName, price)
 
     --store item price
     prices[itemIndex][storeIndex] = price
+
+    db.save
 end
 
 
@@ -235,6 +241,11 @@ function shopListManager.getContentTable()
     return res
 end
 
+--retrieve build from the db module
+function shopListManager.loadBuild(buildName)
+    prices, stores, items = db.load(buildName)
+    currentBuild = buildName
+end
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------

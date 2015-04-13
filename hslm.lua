@@ -180,6 +180,7 @@ end
 -------------------------------------------------------------------------------
 
 local go = true
+slm.loadBuild("default")
 
 while go do
     --draw UI
