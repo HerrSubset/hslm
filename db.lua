@@ -1,6 +1,7 @@
 --start module
 local db = {}
 local lfs = require "lfs"
+local os = require "os"
 
 
 
@@ -12,11 +13,48 @@ local lfs = require "lfs"
 -------------------------------------------------------------------------------
 
 local function goToStorageFolder()
-
+    local homeFolder = os.getenv("HOME")
+    lfs.mkdir(homeFolder .. "/.hslm")
+    lfs.chdir(homeFolder .. "/.hslm")
 end
 
-local function storeTable(path, table)
+local function storeTable(fileName, table)
+    --make sure file exists
+    io.output(fileName)
 
+    f = io.open(fileName, "wb")
+
+    for i = 1, #table do
+        local line = nil
+        for j = 1, #table[i] do
+            if line then
+                line = line .. "," .. table[i][j]
+            else
+                line = "" .. table[i][j]
+            end
+        end
+        line = line .. "\n"
+        f:write(line)
+    end
+    f:close()
+end
+
+local function storeRow(fileName, row)
+    --make sure file exists
+    io.output(fileName)
+
+    f = io.open(fileName, "wb")
+    local line = nil
+    for i = 1, #row do
+        if line then
+            line = line .. "," .. row[i]
+        else
+            line = "" .. row[i]
+        end
+    end
+    line = line .. "\n"
+    f:write(line)
+    f:close()
 end
 
 
@@ -41,8 +79,8 @@ end
 function db.save(buildName, prices, stores, items)
     goToStorageFolder()
     storeTable(buildName .. "_prices.csv", prices)
-    storeTable(buildName .. "_stores.csv", stores)
-    storeTable(buildName .. "_items.csv", items)
+    storeRow(buildName .. "_stores.csv", stores)
+    storeRow(buildName .. "_items.csv", items)
 end
 
 -------------------------------------------------------------------------------
