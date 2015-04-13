@@ -1,5 +1,23 @@
 --start module
 local db = {}
+local lfs = require "lfs"
+
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--Private functions
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+local function goToStorageFolder()
+
+end
+
+local function storeTable(path, table)
+
+end
 
 
 -------------------------------------------------------------------------------
@@ -21,7 +39,10 @@ end
 
 
 function db.save(buildName, prices, stores, items)
-
+    goToStorageFolder()
+    storeTable(buildName .. "_prices.csv", prices)
+    storeTable(buildName .. "_stores.csv", stores)
+    storeTable(buildName .. "_items.csv", items)
 end
 
 -------------------------------------------------------------------------------

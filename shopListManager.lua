@@ -226,7 +226,7 @@ function shopListManager.setPrice(storeName, itemName, price)
     --store item price
     prices[itemIndex][storeIndex] = price
 
-    db.save
+    db.save(currentBuild, prices, stores, items)
 end
 
 
