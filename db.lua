@@ -12,12 +12,15 @@ local os = require "os"
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
+--brings the program to the folder where all the save files should be stored
 local function goToStorageFolder()
     local homeFolder = os.getenv("HOME")
     lfs.mkdir(homeFolder .. "/.hslm")
     lfs.chdir(homeFolder .. "/.hslm")
 end
 
+
+--stores a table as a csv file with the given filename
 local function storeTable(fileName, table)
     --make sure file exists
     io.output(fileName)
@@ -27,6 +30,7 @@ local function storeTable(fileName, table)
     for i = 1, #table do
         local line = nil
         for j = 1, #table[i] do
+            --do not print a comma if it's the first item
             if line then
                 line = line .. "," .. table[i][j]
             else
@@ -39,6 +43,8 @@ local function storeTable(fileName, table)
     f:close()
 end
 
+
+--stores a row as a csv file with the given fileName
 local function storeRow(fileName, row)
     --make sure file exists
     io.output(fileName)
@@ -46,6 +52,7 @@ local function storeRow(fileName, row)
     f = io.open(fileName, "wb")
     local line = nil
     for i = 1, #row do
+        --do not print a comma if it's the first item
         if line then
             line = line .. "," .. row[i]
         else
@@ -56,6 +63,8 @@ local function storeRow(fileName, row)
     f:write(line)
     f:close()
 end
+
+
 
 
 -------------------------------------------------------------------------------
@@ -82,6 +91,9 @@ function db.save(buildName, prices, stores, items)
     storeRow(buildName .. "_stores.csv", stores)
     storeRow(buildName .. "_items.csv", items)
 end
+
+
+
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------

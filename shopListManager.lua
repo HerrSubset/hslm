@@ -17,11 +17,11 @@ local shopListManager = {}
 -------------------------------------------------------------------------------
 
 --array used to store the different items in the shopping list
-local items = {}
+local items = nil
 --array containing all the different stores
-local stores = {}
+local stores = nil
 --table showing the price of an item in a specific store
-local prices = {}
+local prices = nil
 
 local currentBuild = nil
 
