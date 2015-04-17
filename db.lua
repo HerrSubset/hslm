@@ -13,6 +13,18 @@ local csv = require "csv"
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
+local function fileExists(fileName)
+    local res = true
+
+    local attr = lfs.attributes(fileName)
+
+    if attr == nil then
+        res = false
+    end
+
+    return res
+end
+
 --brings the program to the folder where all the save files should be stored
 local function goToStorageFolder()
     local homeFolder = os.getenv("HOME")
@@ -70,18 +82,22 @@ end
 local function loadNumericTable(fileName)
     local res = {}
 
-    local f = csv.open(fileName)
-    local lineNumber = 1
+    if fileExists(fileName) then
 
-    for fields in f:lines() do
-        local tmp = {}
+        local f = csv.open(fileName)
+        local lineNumber = 1
 
-        for i, v in ipairs(fields) do
-            tmp[i] = tonumber(v)
+        for fields in f:lines() do
+            local tmp = {}
+
+            for i, v in ipairs(fields) do
+                tmp[i] = tonumber(v)
+            end
+
+            res[lineNumber] = tmp
+            lineNumber = lineNumber + 1
         end
 
-        res[lineNumber] = tmp
-        lineNumber = lineNumber + 1
     end
 
     return res
@@ -92,11 +108,14 @@ end
 local function loadStringRow(fileName)
     local res = {}
 
-    local f = csv.open(fileName)
+    if fileExists(fileName) then
 
-    for fields in f:lines() do
-        for i, v in ipairs(fields) do
-            res[i] = v
+        local f = csv.open(fileName)
+
+        for fields in f:lines() do
+            for i, v in ipairs(fields) do
+                res[i] = v
+            end
         end
     end
 
