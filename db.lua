@@ -2,6 +2,7 @@
 local db = {}
 local lfs = require "lfs"
 local os = require "os"
+local csv = require "csv"
 
 
 
@@ -65,6 +66,25 @@ local function storeRow(fileName, row)
 end
 
 
+local function loadNumericTable(fileName)
+
+end
+
+local function loadStringRow(fileName)
+    local res = {}
+
+    local f = csv.open(fileName)
+
+    for fields in f:lines() do
+        for i, v in ipairs(fields) do
+            res[i] = v
+        end
+    end
+
+    return res
+end
+
+
 
 
 -------------------------------------------------------------------------------
@@ -79,7 +99,10 @@ function db.load(buildName)
     local storesRes = {}
     local itemsRes = {}
 
-
+    goToStorageFolder()
+    pricesRes = loadNumericTable(buildName .. "_prices.csv")
+    storeRes = loadStringRow(buildName .. "_stores.csv")
+    itemsRes = loadStringRow(buildName .. "_items.csv")
 
     return pricesRes, storesRes, itemsRes
 end
