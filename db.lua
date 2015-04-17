@@ -66,10 +66,29 @@ local function storeRow(fileName, row)
 end
 
 
+--function to retrieve the prices from their csv file
 local function loadNumericTable(fileName)
+    local res = {}
 
+    local f = csv.open(fileName)
+    local lineNumber = 1
+
+    for fields in f:lines() do
+        local tmp = {}
+
+        for i, v in ipairs(fields) do
+            tmp[i] = tonumber(v)
+        end
+
+        res[lineNumber] = tmp
+        lineNumber = lineNumber + 1
+    end
+
+    return res
 end
 
+
+--function to load the items and shop rows from a csv file
 local function loadStringRow(fileName)
     local res = {}
 
