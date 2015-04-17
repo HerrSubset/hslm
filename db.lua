@@ -139,7 +139,7 @@ function db.load(buildName)
 
     goToStorageFolder()
     pricesRes = loadNumericTable(buildName .. "_prices.csv")
-    storeRes = loadStringRow(buildName .. "_stores.csv")
+    storesRes = loadStringRow(buildName .. "_stores.csv")
     itemsRes = loadStringRow(buildName .. "_items.csv")
 
     return pricesRes, storesRes, itemsRes
