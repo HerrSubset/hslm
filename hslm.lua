@@ -156,14 +156,22 @@ local function isValidExitCommand(c)
     return c == "q" or c == "exit" or c == "back"
 end
 
+
+--check if given command is a valid update command
 local function isValidUpdateCommand(c)
     local res = true
 
     if #c > 3 then
+        --first item must be "update"
         if c[1] ~= "update" then
             res = false
         end
-        
+
+        --check if fourth item can be converted to a number
+        if string.match(c[4], "%d+") = nil then
+            res = false
+        end
+
     else
         --c can't be correct if it doesn't contain 4 items at least
         res = false
