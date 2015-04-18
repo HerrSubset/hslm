@@ -156,6 +156,22 @@ local function isValidExitCommand(c)
     return c == "q" or c == "exit" or c == "back"
 end
 
+local function isValidUpdateCommand(c)
+    local res = true
+
+    if #c > 3 then
+        if c[1] ~= "update" then
+            res = false
+        end
+        
+    else
+        --c can't be correct if it doesn't contain 4 items at least
+        res = false
+    end
+
+    return res
+end
+
 
 --split command up, put it in an array and return it
 local function getCommandArray(c)
@@ -163,11 +179,9 @@ local function getCommandArray(c)
 
     --assert(string.match(command, "%a+%s%a+%s%a+%s%d+%.?%d*"))
 
-    for str in string.gmatch(c, "%a+") do
+    for str in string.gmatch(c, "%S+") do
         res[#res + 1] = str
     end
-
-    res[4] = string.match(c, "%d+%.?%d*")
 
     return res
 end
@@ -197,9 +211,12 @@ while go do
         --exit loop
         go = false
     else
+        --TODO: validate input as allowed command
         --process input
         commandArray = getCommandArray(input)
-        slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
+        if(isValidUpdateCommand(commandArray)) then
+            slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
+        end
     end
 end
 
