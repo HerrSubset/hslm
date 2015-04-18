@@ -158,6 +158,7 @@ end
 
 
 --check if given command is a valid update command
+--"update [storename] [itemname] [price]"
 local function isValidUpdateCommand(c)
     local res = true
 
@@ -168,12 +169,37 @@ local function isValidUpdateCommand(c)
         end
 
         --check if fourth item can be converted to a number
-        if string.match(c[4], "%d+") = nil then
+        if string.match(c[4], "%d+") == nil then
             res = false
         end
 
     else
         --c can't be correct if it doesn't contain 4 items at least
+        res = false
+    end
+
+    return res
+end
+
+
+--check if given command is a valid remove command
+--"remove <item/store> [name]"
+local function isValidRemoveCommand(c)
+    local res = true
+
+    if #c > 2 then
+        --first item should be "remove"
+        if c[1] ~= "remove" then
+            res = false
+        end
+
+        --second item should be "store" or "item"
+        if not(c[2] == "item" or c[2] == "store") then
+            res = false
+        end
+
+    else
+        --c has to contain at least 3 items
         res = false
     end
 
@@ -222,8 +248,12 @@ while go do
         --TODO: validate input as allowed command
         --process input
         commandArray = getCommandArray(input)
+
         if(isValidUpdateCommand(commandArray)) then
             slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
+
+        elseif (isValidRemoveCommand(commandArray)) then
+            flashMessage = "valid remove command"
         end
     end
 end
