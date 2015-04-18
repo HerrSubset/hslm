@@ -212,6 +212,18 @@ local function buildContentTable()
 end
 
 
+--delete item at index i and move the following items forward
+local function deleteAtIndex(i, array)
+    --move items
+    for index = i, (#array -1) do
+        array[index] = array[index + 1]
+    end
+
+    --remove last item in array
+    array[#array] = nil
+end
+
+
 
 
 -------------------------------------------------------------------------------
@@ -246,6 +258,19 @@ end
 function shopListManager.loadBuild(buildName)
     prices, stores, items = db.load(buildName)
     currentBuild = buildName
+end
+
+
+--remove an item and it's prices from the build
+function shopListManager.removeItem(itemName)
+    --createStore returns the index of the store. If it creates a new store, we
+    --will just undo it anyway.
+    local index = createItem(itemName)
+    print("remove at index:", index)
+
+    deleteAtIndex(index, items)
+    deleteAtIndex(index, prices)
+
 end
 
 -------------------------------------------------------------------------------

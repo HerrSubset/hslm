@@ -245,7 +245,7 @@ while go do
         --exit loop
         go = false
     else
-        --TODO: validate input as allowed command
+        --TODO: move command execution to separate function
         --process input
         commandArray = getCommandArray(input)
 
@@ -253,7 +253,15 @@ while go do
             slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
 
         elseif (isValidRemoveCommand(commandArray)) then
-            flashMessage = "valid remove command"
+            if(commandArray[2] == "item") then
+                slm.removeItem(commandArray[3])
+
+            elseif (commandArray[2] == "store") then
+                flashMessage = "can't remove stores yet"
+            end
+
+        else
+            flashMessage = "Invalid command"
         end
     end
 end
