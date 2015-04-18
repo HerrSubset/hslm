@@ -263,13 +263,26 @@ end
 
 --remove an item and it's prices from the build
 function shopListManager.removeItem(itemName)
-    --createStore returns the index of the store. If it creates a new store, we
+    --createItem returns the index of the item. If it creates a new item, we
     --will just undo it anyway.
     local index = createItem(itemName)
-    print("remove at index:", index)
 
     deleteAtIndex(index, items)
     deleteAtIndex(index, prices)
+
+end
+
+
+--remove a store and it's prices from the build
+function shopListManager.removeStore(storeName)
+    --createStore returns the index of the store. If it creates a new store, we
+    --will just undo it anyway.
+    local index = createStore(storeName)
+
+    deleteAtIndex(index, stores)
+    for i = 1, #prices do
+        deleteAtIndex(index, prices[i])
+    end
 
 end
 

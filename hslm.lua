@@ -257,7 +257,7 @@ while go do
                 slm.removeItem(commandArray[3])
 
             elseif (commandArray[2] == "store") then
-                flashMessage = "can't remove stores yet"
+                slm.removeStore(commandArray[3])
             end
 
         else
