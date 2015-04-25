@@ -23,16 +23,34 @@ To install the project, simply run:
 ```
 
 ## Usage
-Currently, the program only lets you compare prices for one project at a time.
-You can start the program with ``hslm`` and you'll find an empty screen. There
-are three commands to do things now:
+### Overview Screen
+The program is started by typing ``hslm`` in the command line and you'll find
+an empty overview screen. This is the overview screen, where all your different price
+comparisons are listed. You can use the following commands to perform actions
+in this screen:
 
-* ``update [storename] [itemname] [price]`` allows you to set the price for a
-specific item in a certain store. In case the item and/or the store doesn't
-exist yet, it will be created.
+* ``create [name]`` creates a new price comparison project and immediately
+takes you to the corresponding page.
 
-* ``remove <item/store> [name]`` allows you to remove an item with the given.
+* ``delete [name]`` deletes one of your price comparison projects.
+
+* To select an existing project, just type its name.
+
+* To return to the command line, type ``q``, ``back`` or ``exit``.
+
+### Price Comparison Screen
+This screen shows you the items and what they cost in different stores. There's
+also a column with the lowest price per item, and a row with the totals of
+every column. The way you interact with this screen is through the following
+commands:
+
+* ``update [storename] [itemname] [price]`` allows you to set the price for a specific item in a certain store. In case the item and/or the store doesn't exist yet, it will be created.
+
+* ``remove <item/store> [name]`` allows you to remove an item with the given name.
 For example, you would run ``remove item cpu`` if you want to remove the entire
 row of prices for the item cpu.
 
-* Finally, you can use ``q``, ``back`` or ``exit`` to quit the program.
+* Finally, you can use ``q``, ``back`` or ``exit`` to return to the overview
+screen.
+
+There's no need to save your work, it's being taken care of on the fly.
