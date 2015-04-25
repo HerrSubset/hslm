@@ -235,6 +235,27 @@ local function isInArray(array, s)
 end
 
 
+--draw the builds array onto the screen
+local function drawBuildOverview(builds)
+    local startx = 0
+    local starty = 3
+    local maxColWidth = 0
+
+    for i = 1, #builds do
+        --start next column if necessary
+        if starty == height-3 then
+            starty = 3
+            startx = startx + maxColWidth + 2
+        end
+
+        --print buildname
+        stdscr:mvaddstr(starty, startx, builds[i])
+        maxColWidth = math.max(maxColWidth, string.len(builds[i]))
+        starty = starty + 1
+    end
+end
+
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 --Build view loop
@@ -298,7 +319,7 @@ while not done do
     local builds = slm.getBuildsList()
 
     drawTitle()
-    --TODO: draw content
+    drawBuildOverview(builds)
     drawCommandArea()
 
     local input = stdscr:getstr()
