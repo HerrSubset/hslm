@@ -206,6 +206,18 @@ local function isValidRemoveCommand(c)
     return res
 end
 
+local function isValidCreateCommand(c)
+    local res = true
+
+    if #c > 1 then
+        if c[1] ~= "create" then
+            res = false
+        end
+    end
+
+    return res
+end
+
 
 --split command up, put it in an array and return it
 local function getCommandArray(c)
@@ -323,11 +335,14 @@ while not done do
     drawCommandArea()
 
     local input = stdscr:getstr()
+    local ca = getCommandArray(input)
 
-    if isValidExitCommand(input) then
+    if isValidExitCommand(ca[1]) then
         done = true
-    elseif isInArray(builds, input) then
+    elseif isInArray(builds, ca[1]) then
         runBuildView(input)
+    elseif isValidCreateCommand(ca) then
+        runBuildView(ca[2])
     end
 end
 
