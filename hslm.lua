@@ -40,13 +40,13 @@ local flashMessage = nil
 -------------------------------------------------------------------------------
 
 --print title in center of screen and underline with dashes
-local function drawTitle()
+local function drawTitle(t)
     --print title in center of screen
-    startx = math.floor(width/2) - math.floor(string.len(title)/2)
-    stdscr:mvaddstr(0,startx,title)
+    startx = math.floor(width/2) - math.floor(string.len(t)/2)
+    stdscr:mvaddstr(0,startx,t)
 
     --add dottet line under title
-    for i = 1, string.len(title) do
+    for i = 1, string.len(t) do
         stdscr:move(1,startx+(i-1))
         stdscr:addch("-")
     end
@@ -293,7 +293,7 @@ local function runBuildView(build)
     while go do
         --draw UI
         stdscr:clear()
-        drawTitle()
+        drawTitle(build)
         drawContent()
         drawCommandArea()
 
@@ -343,7 +343,7 @@ while not done do
     local builds = slm.getBuildsList()
 
     --draw the screen
-    drawTitle()
+    drawTitle(title)
     drawBuildOverview(builds)
     drawCommandArea()
 
