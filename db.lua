@@ -170,6 +170,15 @@ function db.getBuildsList()
 end
 
 
+function db.removeBuild(buildName)
+    local f = homeFolder .. storageFolder .. "/"
+    goToStorageFolder()
+    os.remove(f .. buildName .. "_prices.csv")
+    os.remove(f .. buildName .. "_items.csv")
+    os.remove(f .. buildName .. "_stores.csv")
+end
+
+
 
 
 -------------------------------------------------------------------------------

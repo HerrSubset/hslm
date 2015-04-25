@@ -294,6 +294,12 @@ function shopListManager.getBuildsList()
     return db.getBuildsList()
 end
 
+
+--ask db module to delete a certain build
+function shopListManager.removeBuild(buildName)
+    db.removeBuild(buildName)
+end
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 --return module

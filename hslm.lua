@@ -206,13 +206,25 @@ local function isValidRemoveCommand(c)
     return res
 end
 
+--check if given command is a valid create command
+--"create [buildname]"
 local function isValidCreateCommand(c)
-    local res = true
+    local res = false
 
-    if #c > 1 then
-        if c[1] ~= "create" then
-            res = false
-        end
+    if #c > 1 and c[1] == "create" then
+        res = true
+    end
+
+    return res
+end
+
+--check if given command is a valid delete command
+--"delete [buildname]"
+local function isValidDeleteCommand(c)
+    local res = false
+
+    if #c > 1 and (c[1] == "delete" or c[1] == "remove") then
+        res = true
     end
 
     return res
@@ -330,19 +342,28 @@ while not done do
 
     local builds = slm.getBuildsList()
 
+    --draw the screen
     drawTitle()
     drawBuildOverview(builds)
     drawCommandArea()
 
+    --get and process user input
     local input = stdscr:getstr()
     local ca = getCommandArray(input)
 
+    --act according to user input
     if isValidExitCommand(ca[1]) then
         done = true
-    elseif isInArray(builds, ca[1]) then
-        runBuildView(input)
+
     elseif isValidCreateCommand(ca) then
         runBuildView(ca[2])
+
+    elseif isValidDeleteCommand(ca) and isInArray(builds, ca[2]) then
+        print("deleting")
+        slm.removeBuild(ca[2])
+
+    elseif isInArray(builds, ca[1]) then
+        runBuildView(input)
     end
 end
 
