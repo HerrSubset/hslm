@@ -269,7 +269,8 @@ function shopListManager.removeItem(itemName)
 
     deleteAtIndex(index, items)
     deleteAtIndex(index, prices)
-
+    
+    db.save(currentBuild, prices, stores, items)
 end
 
 
@@ -284,6 +285,7 @@ function shopListManager.removeStore(storeName)
         deleteAtIndex(index, prices[i])
     end
 
+    db.save(currentBuild, prices, stores, items)
 end
 
 -------------------------------------------------------------------------------
