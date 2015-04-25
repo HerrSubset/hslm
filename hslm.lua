@@ -223,47 +223,65 @@ end
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+--Build view loop
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+local function runBuildView(build)
+    local go = true
+    slm.loadBuild(build)
+
+    while go do
+        --draw UI
+        stdscr:clear()
+        drawTitle()
+        drawContent()
+        drawCommandArea()
+
+        --get input
+        local input = stdscr:getstr()
+
+        --process input
+        if isValidExitCommand(input) then
+            --exit loop
+            go = false
+        else
+            --TODO: move command execution to separate function
+            --process input
+            commandArray = getCommandArray(input)
+
+            if(isValidUpdateCommand(commandArray)) then
+                slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
+
+            elseif (isValidRemoveCommand(commandArray)) then
+                if(commandArray[2] == "item") then
+                    slm.removeItem(commandArray[3])
+
+                elseif (commandArray[2] == "store") then
+                    slm.removeStore(commandArray[3])
+                end
+
+            else
+                flashMessage = "Invalid command"
+            end
+        end
+    end
+end
+
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 --Main program loop
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+local done = false
 
-local go = true
-slm.loadBuild("default")
+while not done do
+    runBuildView("default")
 
-while go do
-    --draw UI
-    stdscr:clear()
-    drawTitle()
-    drawContent()
-    drawCommandArea()
-
-    --get input
-    local input = stdscr:getstr()
-
-    --process input
-    if isValidExitCommand(input) then
-        --exit loop
-        go = false
-    else
-        --TODO: move command execution to separate function
-        --process input
-        commandArray = getCommandArray(input)
-
-        if(isValidUpdateCommand(commandArray)) then
-            slm.setPrice(commandArray[2], commandArray[3], tonumber(commandArray[4]))
-
-        elseif (isValidRemoveCommand(commandArray)) then
-            if(commandArray[2] == "item") then
-                slm.removeItem(commandArray[3])
-
-            elseif (commandArray[2] == "store") then
-                slm.removeStore(commandArray[3])
-            end
-
-        else
-            flashMessage = "Invalid command"
-        end
-    end
+    done = true
 end
 
 --end curses
