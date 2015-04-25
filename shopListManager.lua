@@ -269,7 +269,7 @@ function shopListManager.removeItem(itemName)
 
     deleteAtIndex(index, items)
     deleteAtIndex(index, prices)
-    
+
     db.save(currentBuild, prices, stores, items)
 end
 
@@ -286,6 +286,12 @@ function shopListManager.removeStore(storeName)
     end
 
     db.save(currentBuild, prices, stores, items)
+end
+
+
+--ask db module for an overview of all the builds
+function shopListManager.getBuildsList()
+    return db.getBuildsList()
 end
 
 -------------------------------------------------------------------------------

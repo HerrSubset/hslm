@@ -4,6 +4,9 @@ local lfs = require "lfs"
 local os = require "os"
 local csv = require "csv"
 
+local homeFolder = os.getenv("HOME")
+local storageFolder = "/.hslm"
+
 
 
 
@@ -27,9 +30,8 @@ end
 
 --brings the program to the folder where all the save files should be stored
 local function goToStorageFolder()
-    local homeFolder = os.getenv("HOME")
-    lfs.mkdir(homeFolder .. "/.hslm")
-    lfs.chdir(homeFolder .. "/.hslm")
+    lfs.mkdir(homeFolder .. storageFolder)
+    lfs.chdir(homeFolder .. storageFolder)
 end
 
 
@@ -151,6 +153,20 @@ function db.save(buildName, prices, stores, items)
     storeTable(buildName .. "_prices.csv", prices)
     storeRow(buildName .. "_stores.csv", stores)
     storeRow(buildName .. "_items.csv", items)
+end
+
+
+function db.getBuildsList()
+    res = {}
+
+    for file in lfs.dir(homeFolder .. storageFolder) do
+        if string.match(file, "%S+_prices.csv") then
+            local buildName = string.sub(file, 1, -12)
+            res[#res + 1] = buildName
+        end
+    end
+
+    return res
 end
 
 

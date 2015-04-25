@@ -279,6 +279,7 @@ end
 local done = false
 
 while not done do
+    local builds = slm.getBuildsList()
     runBuildView("default")
 
     done = true
