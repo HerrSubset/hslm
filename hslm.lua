@@ -221,6 +221,20 @@ local function getCommandArray(c)
 end
 
 
+--returns true if s is an element in the array
+local function isInArray(array, s)
+    local res = false
+
+    for i = 1, #array do
+        if array[i] == s then
+            res = true
+        end
+    end
+
+    return res
+end
+
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 --Build view loop
@@ -279,10 +293,21 @@ end
 local done = false
 
 while not done do
-    local builds = slm.getBuildsList()
-    runBuildView("default")
+    stdscr:clear()
 
-    done = true
+    local builds = slm.getBuildsList()
+
+    drawTitle()
+    --TODO: draw content
+    drawCommandArea()
+
+    local input = stdscr:getstr()
+
+    if isValidExitCommand(input) then
+        done = true
+    elseif isInArray(builds, input) then
+        runBuildView(input)
+    end
 end
 
 --end curses
